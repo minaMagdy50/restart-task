@@ -2,12 +2,17 @@
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { useRouter } from "next/navigation";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "@/context/AuthProvider";
 
 const LoginPage = () => {
   const { token, login } = useContext(AuthContext)!;
   const router = useRouter();
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
 
   useEffect(() => {
     if (token) router.push("/dashboard");
@@ -81,11 +86,12 @@ const LoginPage = () => {
                 <input
                   placeholder="Enter your password"
                   className="w-full rounded-lg border-gray-300 p-4 pe-12 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-transparent"
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   name="password"
                   id="password"
+                  required
                 />
-                <span className="absolute inset-y-0 end-0 grid place-content-center px-4">
+                <span className="absolute inset-y-0 end-0 grid place-content-center px-4" onClick={togglePasswordVisibility}>
                   <svg
                     stroke="currentColor"
                     viewBox="0 0 24 24"
